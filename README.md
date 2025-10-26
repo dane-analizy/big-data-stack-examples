@@ -1,3 +1,7 @@
+# Big Data Stack - przykłady
+
+Przykłady do stacku narzędzi big data zbudowanego w ramach repo [https://github.com/dane-analizy/big-data-stack](big-data-stack).
+
 ## Dostępne usługi
 
 - Hadoop UI:      → <http://localhost:9870>
