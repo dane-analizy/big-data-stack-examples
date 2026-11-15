@@ -12,7 +12,7 @@ Przykłady do stacku narzędzi big data zbudowanego w ramach repo [https://githu
 - Spark Worker UI → <http://localhost:8081>
 - Kafka broker:   → localhost:29092 (zewnętrzny listener)
 - Mongo UI:       → <http://localhost:8082> (admin / pass)
-- NiFi UI:        → <https://localhost:8443>> (login admin / hasło w logach kontenera)
+- NiFi UI:        → <https://localhost:8443> (login admin / hasło w logach kontenera)
 
 ## Kafka
 
@@ -95,7 +95,7 @@ Konsument wyświetli odebrane komunikaty. Zakończ go skrótem `Ctrl+C`. Konsume
    docker cp ./test-data namenode:/tmp/test-data
    ```
 
-   2. Następnie w kontenerze przenieś pliki do HDFS
+   1. Następnie w kontenerze przenieś pliki do HDFS
 
    ```bash
    docker exec -it namenode bash
