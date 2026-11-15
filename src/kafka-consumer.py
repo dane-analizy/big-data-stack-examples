@@ -1,31 +1,39 @@
 from confluent_kafka import Consumer
+
 from utils.config import load_config
 
-config = load_config("./config.yaml")
+# Ustawienia połączenia, topiku i grupy konsumentów.
+config = load_config("./config.yaml")["kafka"]
+broker = f'{config["host"]}:{config["port"]}'
+topic = config["topic"]
 
-kafka_broker = f'{config["kafka"]["host"]}:{config["kafka"]["port"]}'
-kafka_topic = config["kafka"]["topic"]
-kafka_group_id = config["kafka"]["group-id"]
-kafka_offset_reset = config["kafka"]["auto-offset-reset"]
-
-c = Consumer(
+consumer = Consumer(
     {
-        "bootstrap.servers": kafka_broker,
-        "group.id": kafka_group_id,
-        "auto.offset.reset": kafka_offset_reset,
-        "enable.auto.commit": True,
+        "bootstrap.servers": broker,
+        "group.id": config["group-id"],
+        "auto.offset.reset": config["auto-offset-reset"],
+        "enable.auto.commit": config["enable-auto-commit"],
     }
 )
 
-c.subscribe([kafka_topic])
+# Zapisz się do topiku i zacznij odbierać komunikaty.
+consumer.subscribe([topic])
 
-while True:
-    msg = c.poll(1.0)
+try:
+    while True:
+        message = consumer.poll(1.0)
 
-    if msg is None:
-        continue
-    if msg.error():
-        print("Consumer error: {}".format(msg.error()))
-        continue
+        # Jeśli przez sekundę nie ma wiadomości, sprawdź ponownie.
+        if message is None:
+            continue
+        if message.error():
+            print(f"Błąd konsumenta: {message.error()}")
+            continue
 
-    print("Received message: {}".format(msg.value().decode("utf-8")))
+        # Odczytana wartość jest w bajtach; dekodujemy ją jako tekst UTF-8.
+        print(message.value().decode("utf-8"))
+except KeyboardInterrupt:
+    print("Zatrzymano konsumenta.")
+finally:
+    # Zamknij konsumenta i zwolnij jego zasoby.
+    consumer.close()

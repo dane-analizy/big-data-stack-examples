@@ -48,6 +48,24 @@ cd /opt/kafka/bin
 ./kafka-console-consumer.sh --bootstrap-server broker:9092 --topic nazwa_topica
 ```
 
+### Wysłanie i odbiór wiadomości w Pythonie
+
+Przykłady korzystają z ustawień brokera i topiku w `config.yaml`. Uruchom je z katalogu głównego projektu, po starcie brokera Kafka i zainstalowaniu zależności (`uv sync`).
+
+1. W pierwszym terminalu uruchom konsumenta:
+
+   ```bash
+   uv run python src/kafka-consumer.py
+   ```
+
+2. W drugim terminalu wyślij przykładowe wiadomości:
+
+   ```bash
+   uv run python src/kafka-producer.py
+   ```
+
+Konsument wyświetli odebrane komunikaty. Zakończ go skrótem `Ctrl+C`. Konsument używa grupy z `config.yaml`, więc Kafka zapamiętuje jej postęp; przy kolejnym uruchomieniu może nie wyświetlić wcześniej odebranych wiadomości.
+
 ## Hadoop
 
 ### Podstawowe operacje na HDFS
